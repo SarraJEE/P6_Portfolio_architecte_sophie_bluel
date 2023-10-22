@@ -1,11 +1,42 @@
+   
 const api_url = 'http://localhost:5678/api/works';
-fetch(api_url) // aller chercher la donnée
-    .then(response => {
-        return response.json(); // extraire toutes les données
-    })
-    .catch(error => console.error('Erreur lors de la récupération des données : ', error));
+let works = [];
+const sectionProjets = document.querySelector(".gallery");
 
+async function Projects() {
+  try {
+    // Effectuer la requête pour récupérer les données
+    const response = await fetch(api_url);
 
+    if (!response.ok) {
+      throw new Error('La requête a échoué');
+    }
+
+    // Extraire les données au format JSON
+    works = await response.json();
+
+    // Parcourir les données et afficher chaque projet
+    works.forEach((project) => {
+      const figure = document.createElement("figure");
+      sectionProjets.appendChild(figure);
+      figure.classList.add(`js-projet-${project.id}`);
+      
+      const img = document.createElement("img");
+      img.src = project.imageUrl;
+      img.alt = project.title;
+      figure.appendChild(img);
+
+      const figcaption = document.createElement("figcaption");
+      figcaption.innerHTML = project.title;
+      figure.appendChild(figcaption);
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données : ', error);
+  }
+}
+
+// Appeler la fonction Projects pour récupérer et afficher les données
+Projects();
 const divBtns = document.querySelector(".btns");
 
 //Ajoutez des bouton pour les projets
@@ -21,6 +52,7 @@ for (let i = 1; i <= 4; i++) {
     const bouton = document.querySelector(".btn_" + i);
     if (i === 1) {
         bouton.textContent = "Tous";
+        
     } else if (i === 2) {
         bouton.textContent = "Objets";
     } else if (i === 3) {
@@ -31,4 +63,8 @@ for (let i = 1; i <= 4; i++) {
 }
 
 }
+
+
+
+
 
