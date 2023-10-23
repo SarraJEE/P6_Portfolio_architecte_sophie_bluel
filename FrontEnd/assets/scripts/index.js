@@ -1,70 +1,81 @@
-   
-const api_url = 'http://localhost:5678/api/works';
+
+const api_url_works = 'http://localhost:5678/api/works';
+const api_url_categories = 'http://localhost:5678/api/categories';
 let works = [];
-const sectionProjets = document.querySelector(".gallery");
+let categories = [];
+const sectionWorks = document.querySelector(".gallery");
+const sectionFiltreBtns = document.querySelector(".btns");
 
-async function Projects() {
-  try {
-    // Effectuer la requête pour récupérer les données
-    const response = await fetch(api_url);
+async function main() {
+    // Appeler la fonction pour récupérer et afficher les données
+    await displayWorks();
+    await displayCategories(); // Ajout de l'appel pour afficher les catégories
+}
 
-    if (!response.ok) {
-      throw new Error('La requête a échoué');
+main();
+
+async function displayWorks() {
+    try {
+        // Effectuer la requête pour récupérer les données
+        const response = await fetch(api_url_works);
+
+        if (!response.ok) {
+            throw new Error('La requête a échoué');
+        }
+
+        // Extraire les données au format JSON
+        works = await response.json();
+
+        // Parcourir les données et afficher chaque projet
+        works.forEach((work) => {
+            createWork(work);
+        });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données : ', error);
     }
-
-    // Extraire les données au format JSON
-    works = await response.json();
-
-    // Parcourir les données et afficher chaque projet
-    works.forEach((project) => {
-      const figure = document.createElement("figure");
-      sectionProjets.appendChild(figure);
-      figure.classList.add(`js-projet-${project.id}`);
-      
-      const img = document.createElement("img");
-      img.src = project.imageUrl;
-      img.alt = project.title;
-      figure.appendChild(img);
-
-      const figcaption = document.createElement("figcaption");
-      figcaption.innerHTML = project.title;
-      figure.appendChild(figcaption);
-    });
-  } catch (error) {
-    console.error('Erreur lors de la récupération des données : ', error);
-  }
 }
 
-// Appeler la fonction Projects pour récupérer et afficher les données
-Projects();
-const divBtns = document.querySelector(".btns");
+// Créer un work dans la galerie
+function createWork(work) {
+    const figure = document.createElement("figure");
+    sectionWorks.appendChild(figure);
+    const img = document.createElement("img");
+    img.src = work.imageUrl;
+    figure.appendChild(img);
+    img.alt = work.title;
+    const figcaption = document.createElement("figcaption");
+    figcaption.innerHTML = work.title;
+    figure.appendChild(figcaption);
+}
 
-//Ajoutez des bouton pour les projets
-for (let i = 1; i <= 4; i++) {
-    // Créez un élément btn
-    const nouveauBtn = document.createElement("button");
-    // Ajoutez la classe "btn" à l'élément
-    nouveauBtn.className = "btn_" + i;
+// Créer un bouton pour chaque catégorie
+function createCategory(category) {
+    const bouton = document.createElement('button');
+    bouton.innerText = category.name;
+    bouton.classList.add('btn_'+category.id);
+    sectionFiltreBtns.appendChild(bouton);
+}
 
-    // Sélectionnez l'élément avec la classe "btns" et ajoutez l'élément btn comme enfant
-    divBtns.appendChild(nouveauBtn);
-    // Définissez le contenu du bouton en fonction de l'index
-    const bouton = document.querySelector(".btn_" + i);
-    if (i === 1) {
-        bouton.textContent = "Tous";
-        
-    } else if (i === 2) {
-        bouton.textContent = "Objets";
-    } else if (i === 3) {
-        bouton.textContent = "Appartements";
+async function displayCategories() {
+    try {
+        // Effectuer la requête pour récupérer les catégories
+        const response = await fetch(api_url_categories);
+
+        if (!response.ok) {
+            throw new Error('La requête a échoué');
+        }
+
+        // Extraire les catégories au format JSON
+        categories = await response.json();
+
+        // Parcourir les catégories et créer un bouton pour chaque catégorie
+        categories.forEach((category) => {
+            createCategory(category);
+        });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des catégories : ', error);
     }
- else if (i === 4) {
-    bouton.textContent = "Hôtels & restaurants";
 }
-
-}
-
-
 
 
 
