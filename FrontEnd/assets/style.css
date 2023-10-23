@@ -135,7 +135,7 @@ li:hover {
 
 
 /* Styles pour des boutons spécifiques */
-.btn_0 {
+.btnTous{
 	text-align: center;
 	font-family: Syne;
 	font-size: 16px;
@@ -144,11 +144,12 @@ li:hover {
 	line-height: normal;
 	height: 37px;
     border-radius: 60px;
-    border: 1px solid #1D6154;
+    color: #1D6154;
+	background: #FFF;
     width: 100px;
 }
 
-.btn_1 {
+.btn1 {
 	text-align: center;
 	font-family: Syne;
 	font-size: 16px;
@@ -163,7 +164,7 @@ li:hover {
     width: 100px;
 }
 
-.btn_2 {
+.btn2 {
 	text-align: center;
 	font-family: Syne;
 	font-size: 16px;
@@ -178,7 +179,7 @@ li:hover {
     width: 157px;
 }
 
-.btn_3{
+.btn3{
 	text-align: center;
 	font-family: Syne;
 	font-size: 16px;

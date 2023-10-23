@@ -5,6 +5,7 @@ let works = [];
 let categories = [];
 const sectionWorks = document.querySelector(".gallery");
 const sectionFiltreBtns = document.querySelector(".btns");
+const boutonTous=document.querySelector(".btnTous");
 
 async function main() {
     // Appeler la fonction pour récupérer et afficher les données
@@ -18,14 +19,11 @@ async function displayWorks() {
     try {
         // Effectuer la requête pour récupérer les données
         const response = await fetch(api_url_works);
-
         if (!response.ok) {
             throw new Error('La requête a échoué');
         }
-
         // Extraire les données au format JSON
         works = await response.json();
-
         // Parcourir les données et afficher chaque projet
         works.forEach((work) => {
             createWork(work);
@@ -52,10 +50,19 @@ function createWork(work) {
 function createCategory(category) {
     const bouton = document.createElement('button');
     bouton.innerText = category.name;
-    bouton.classList.add('btn_'+category.id);
+    bouton.classList.add("btn");
+    bouton.classList.add("btn" + category.id);
     sectionFiltreBtns.appendChild(bouton);
+    bouton.addEventListener('click', () => {
+        const categoryId = category.id; // Récupérer l'ID de la catégorie
+        const categoryButtons = document.querySelectorAll('.btn');
+        // Supprimer la classe active de tous les boutons
+        categoryButtons.forEach((button) => button.classList.remove("btn_active"));
+        // Ajouter la classe active au bouton cliqué 
+        bouton.classList.add("btn_active"); 
+        filterWorksByCategory(categoryId); 
+    });
 }
-
 async function displayCategories() {
     try {
         // Effectuer la requête pour récupérer les catégories
@@ -70,12 +77,36 @@ async function displayCategories() {
 
         // Parcourir les catégories et créer un bouton pour chaque catégorie
         categories.forEach((category) => {
-            createCategory(category);
+         createCategory(category);
         });
+
     } catch (error) {
         console.error('Erreur lors de la récupération des catégories : ', error);
     }
 }
 
+function filterWorksByCategory(category) {
+    // Supprimez la galerie actuelle
+    sectionWorks.innerHTML = '';
+    // Parcourez les travaux et affichez ceux qui correspondent à la catégorie sélectionnée
+    works.forEach((work) => {
+        if (work.category.id == category ) {
+            createWork(work);
+        }
+    });
 
+}
 
+//clic sur btn tous
+boutonTous.addEventListener('click', () => {
+    //Supprimez la galerie actuelle
+    sectionWorks.innerHTML = '';
+    const categoryButtons = document.querySelectorAll('.btn');
+    // Supprimer la classe active de tous les boutons
+    categoryButtons.forEach((button) => button.classList.remove("btn_active"));
+    // Ajouter la classe active au bouton cliqué 
+    boutonTous.classList.add("btn_active"); 
+     displayWorks();
+    
+});
+//ok
