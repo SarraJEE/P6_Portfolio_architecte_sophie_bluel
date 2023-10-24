@@ -5,7 +5,9 @@ let works = [];
 let categories = [];
 const sectionWorks = document.querySelector(".gallery");
 const sectionFiltreBtns = document.querySelector(".btns");
-const boutonTous=document.querySelector(".btnTous");
+const boutonTous = document.querySelector(".btnTous");
+boutonTous.classList.add("btn_active");
+
 
 async function main() {
     // Appeler la fonction pour récupérer et afficher les données
@@ -15,9 +17,10 @@ async function main() {
 
 main();
 
+
 async function displayWorks() {
     try {
-        // Effectuer la requête pour récupérer les données
+        // Effectuer la requête pour récupérer les Works 
         const response = await fetch(api_url_works);
         if (!response.ok) {
             throw new Error('La requête a échoué');
@@ -32,7 +35,6 @@ async function displayWorks() {
         console.error('Erreur lors de la récupération des données : ', error);
     }
 }
-
 // Créer un work dans la galerie
 function createWork(work) {
     const figure = document.createElement("figure");
@@ -59,8 +61,8 @@ function createCategory(category) {
         // Supprimer la classe active de tous les boutons
         categoryButtons.forEach((button) => button.classList.remove("btn_active"));
         // Ajouter la classe active au bouton cliqué 
-        bouton.classList.add("btn_active"); 
-        filterWorksByCategory(categoryId); 
+        bouton.classList.add("btn_active");
+        filterWorksByCategory(categoryId);
     });
 }
 async function displayCategories() {
@@ -77,36 +79,34 @@ async function displayCategories() {
 
         // Parcourir les catégories et créer un bouton pour chaque catégorie
         categories.forEach((category) => {
-         createCategory(category);
+            createCategory(category);
         });
+        //clic sur le boton tous
+        boutonTous.addEventListener('click', () => {
+            //Supprimez la galerie actuelle
+            sectionWorks.innerHTML = '';
+            const categoryButtons = document.querySelectorAll('.btn');
+            // Supprimer la classe active de tous les boutons
+            categoryButtons.forEach((button) => button.classList.remove("btn_active"));
+            // Ajouter la classe active au bouton cliqué 
+            boutonTous.classList.add("btn_active");
+            displayWorks();
 
+        });
     } catch (error) {
         console.error('Erreur lors de la récupération des catégories : ', error);
     }
 }
-
 function filterWorksByCategory(category) {
     // Supprimez la galerie actuelle
     sectionWorks.innerHTML = '';
     // Parcourez les travaux et affichez ceux qui correspondent à la catégorie sélectionnée
     works.forEach((work) => {
-        if (work.category.id == category ) {
+        if (work.category.id == category) {
             createWork(work);
         }
     });
-
 }
 
-//clic sur btn tous
-boutonTous.addEventListener('click', () => {
-    //Supprimez la galerie actuelle
-    sectionWorks.innerHTML = '';
-    const categoryButtons = document.querySelectorAll('.btn');
-    // Supprimer la classe active de tous les boutons
-    categoryButtons.forEach((button) => button.classList.remove("btn_active"));
-    // Ajouter la classe active au bouton cliqué 
-    boutonTous.classList.add("btn_active"); 
-     displayWorks();
-    
-});
+
 //ok
