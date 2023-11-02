@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             loginEmailError.appendChild(p);
             return;
         }
-        // Validation du mot de passe (exemple : au moins 5 caractères alphanumériques)
+        // Validation du mot de passe (exemple : au moins 6 caractères alphanumériques)
         if (password.length < 6 || !password.match(/^[a-zA-Z0-9]+$/g)) {
             const p = document.createElement('p');
             p.innerHTML = 'Veuillez entrer un mot de passe valide';
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Connexion réussie
                 // Vous pouvez stocker le token et rediriger l'utilisateur
                 console.log('Connexion réussie. Token :', responseData.token);
-                localStorage.setItem("token", responseData.token);
+                sessionStorage.setItem("token", responseData.token);
 
                 // Redirection vers la page d'acceuil
                 window.location.href = 'index.html';
@@ -80,12 +80,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Une erreur s\'est produite :', error);
         }
     });
-    // Gérer le cas où l'utilisateur est déjà connecté
-    if (localStorage.getItem('token')) {
-        localStorage.removeItem('token');
-        const p = document.createElement('p');
-        p.innerHTML = 'Vous avez été déconnecté, veuillez vous reconnecter';
-        loginEmailError.appendChild(p);
-    }
+    
 
 });

@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Appeler la fonction pour récupérer et afficher les données
         await displayWorks();
         await displayCategories(); // Ajout de l'appel pour afficher les catégories
+
+        await Admin();
     }
 
     main();
@@ -98,3 +100,81 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
+
+//Partie Admin connecté
+const adminToken=sessionStorage.getItem("token");
+
+function Admin(){
+if (adminToken){
+    const connect=document.querySelector(".loginAdmin");
+    connect.innerHTML= "<a href='#'>logout</a>";
+    connect.addEventListener("click",(e) => {
+        e.preventDefault(); 
+        sessionStorage.removeItem("token");
+        window.location.href="index.html";
+    });
+
+    adminDisplay();
+    modaleProjets();
+    
+};
+
+
+};
+function adminDisplay(){
+ //Création de la banniére
+ const banner = document.querySelector(".banner");
+ banner.innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: white;"></i>' + '<h2>Mode édition</h2>';
+ banner.classList.add("visibleBanner");
+ 
+//On masque les filtres 
+const sectionFiltreBtns = document.querySelector(".btns");
+sectionFiltreBtns.classList.add("invisible");
+//Ajout du bouton modifie
+// Sélectionnez l'élément du modal
+const modal = document.getElementById("modal1");
+const portfolio =document.getElementById("portfolio");
+const boutonEdit=document.createElement("a");
+boutonEdit.innerHTML='<i class="fa-solid fa-pen-to-square" style="color:black;";></i>'+'<h2 >modifier<h2/>';
+boutonEdit.addEventListener("click", ouvrirModal);
+
+boutonEdit.classList.add("boutonEdit");
+portfolio.appendChild(boutonEdit);
+/**************************************************************** */
+
+// Fonction pour ouvrir le modal
+function ouvrirModal() {
+  modal.style.display = "block";
+}
+
+
+
+}
+
+// Génère les projets dans la modale admin
+async function modaleProjets() {
+    try {
+      const response = await fetch('http://localhost:5678/api/works');
+      const dataAdmin = await response.json();
+      const modalContenu = document.querySelector(".gallery-modal"); // Sélectionnez le contenu de la modale
+  
+      for (let i = 0; i < dataAdmin.length; i++) {
+        const fig = document.createElement("figure");
+        fig.classList.add("gallery-modale");
+        modalContenu.appendChild(fig); // Ajoutez le div à modal-contenu
+  
+        const img = document.createElement("img");
+        img.src = dataAdmin[i].imageUrl;
+        fig.appendChild(img); // Ajoutez l'image à la figure
+        img.classList.add("gallery-modale-img");
+        const p = document.createElement("p"); // Créez un élément p pour contenir l'icône
+        const icon = document.createElement("i");
+        icon.classList.add("fa-solid", "fa-trash-can");
+        p.appendChild(icon);
+        fig.appendChild(p); // Ajoutez p avec l'icône à la figure
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données admin : ", error);
+    }
+  }
+  
