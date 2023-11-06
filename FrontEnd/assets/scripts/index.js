@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Créer un work dans la galerie
     function createWork(work) {
         const figure = document.createElement("figure");
+        figure.setAttribute('data-id', work.id);
         sectionWorks.appendChild(figure);
         const img = document.createElement("img");
         img.src = work.imageUrl;
@@ -170,38 +171,64 @@ async function modaleProjets() {
         const response = await fetch('http://localhost:5678/api/works');
         const dataAdmin = await response.json();
         const modalGallery = document.querySelector(".gallery-modal");
-        dataAdmin.forEach((work, index) => {
-            const fig = document.createElement('figure');
-            fig.classList.add('gallery-modale');
-            modalGallery.appendChild(fig);
-            const p = document.createElement('p'); 
-            const icon = document.createElement('i');
-            icon.classList.add('fa-solid', 'fa-trash-can', 'icon');
-            p.appendChild(icon);
-            p.classList.add('delete');
-            const divImg = document.createElement('div');
-            divImg.appendChild(p);
-           // img.src = work.imageUrl;
+        newFunction(dataAdmin, modalGallery);
 
-           divImg.classList.add('gallery-modale-img');
-           divImg.style.backgroundImage= "url('"+work.imageUrl+"')";
-           divImg.style.width='78px';
-           divImg.style.height='104px';
-            //fig.style.backgroundImage= "url('work.imageUrl')"
-            //fig.appendChild(img);
-            fig.appendChild(divImg);
-            
-           
-           // fig.appendChild(p);
-           // p.classList.add('delete')
-        });
+
     } catch (error) {
         console.error('Erreur lors de la récupération des données admin : ', error);
     }
+
+    
 };
 
+//function pour ajouter les photos dans la modale
+function newFunction(dataAdmin, modalGallery) {
+    dataAdmin.forEach((work) => {
+        const fig = document.createElement('figure');
+        fig.classList.add('gallery-modale');
+        modalGallery.appendChild(fig);
+        const p = document.createElement('p');
+        const icon = document.createElement('i');
+        icon.classList.add('fa-solid', 'fa-trash-can', 'icon');
+        p.appendChild(icon);
+        p.classList.add('delete');
+        const divImg = document.createElement('div');
+        divImg.appendChild(p);
+        divImg.classList.add('gallery-modale-img');
+        divImg.style.backgroundImage = "url('" + work.imageUrl + "')";
+        divImg.style.width = '78px';
+        divImg.style.height = '104px';
+        fig.appendChild(divImg);
+        deletWork(icon,fig);
+        modalGallery.appendChild(fig);
+
+    });
+}
+//fonction supprimer un work
+function deletWork(icon, fig) {
+    icon.addEventListener('click', async function (event) {
+        event.stopPropagation();
+        const workId = fig.getAttribute('data-id');
+        try {
+            const response = await fetch(`http://localhost:5678/api/works/${workId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            });
+            if (response.ok) {
+                fig.remove();
+            } else {
+                console.error('Erreur lors de la suppression du travail.');
+            }
+        } catch (error) {
+            console.error('Erreur lors de la suppression du travail :', error);
+        }
+    });
+}
 //Fonction pour aller vers la deuxième modale 
- function modaleAjoutPhoto() {
+function modaleAjoutPhoto() {
     const newModal = document.getElementById("modal2");
     const boutonAjoutPhoto = document.querySelector('.btn-modal');
     const modalGallery = document.querySelector(".gallery-modal");
@@ -219,22 +246,22 @@ async function modaleProjets() {
 
     });
 
-// Fonction pour fermer le modal
-function fermerModal() {
-    newModalmodal.style.display = "none";
-    
-}
-const boutonFermerNewModal = document.getElementById('fermerModal2');
-boutonFermerNewModal.addEventListener('click', () => {
-    fermerModal()
-});
+    // Fonction pour fermer le modal
+    function fermerModal() {
+        newModalmodal.style.display = "none";
 
-// Si vous voulez également permettre de fermer la modal en cliquant à l'extérieur de celle-ci
-window.addEventListener('click', (event) => {
-    if (event.target === modal) {
-        fermerModal();
     }
-});
+    const boutonFermerNewModal = document.getElementById('fermerModal2');
+    boutonFermerNewModal.addEventListener('click', () => {
+        fermerModal()
+    });
+
+    // Si vous voulez également permettre de fermer la modal en cliquant à l'extérieur de celle-ci
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            fermerModal();
+        }
+    });
 
 
 }
