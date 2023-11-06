@@ -144,6 +144,7 @@ function adminDisplay() {
     // Fonction pour ouvrir le modal
     function ouvrirModal() {
         modal.style.display = "block";
+
     }
     // Fonction pour fermer le modal
     function fermerModal() {
@@ -171,26 +172,26 @@ async function modaleProjets() {
         const response = await fetch('http://localhost:5678/api/works');
         const dataAdmin = await response.json();
         const modalGallery = document.querySelector(".gallery-modal");
-        newFunction(dataAdmin, modalGallery);
+        AjoutImage(dataAdmin, modalGallery);
 
 
     } catch (error) {
         console.error('Erreur lors de la récupération des données admin : ', error);
     }
 
-    
+
 };
 
 //function pour ajouter les photos dans la modale
-function newFunction(dataAdmin, modalGallery) {
+function AjoutImage(dataAdmin, modalGallery) {
     dataAdmin.forEach((work) => {
         const fig = document.createElement('figure');
         fig.classList.add('gallery-modale');
         modalGallery.appendChild(fig);
         const p = document.createElement('p');
-        const icon = document.createElement('i');
-        icon.classList.add('fa-solid', 'fa-trash-can', 'icon');
-        p.appendChild(icon);
+        const deletIcon = document.createElement('i');
+        deletIcon.classList.add('fa-solid', 'fa-trash-can', 'icon');
+        p.appendChild(deletIcon);
         p.classList.add('delete');
         const divImg = document.createElement('div');
         divImg.appendChild(p);
@@ -199,14 +200,14 @@ function newFunction(dataAdmin, modalGallery) {
         divImg.style.width = '78px';
         divImg.style.height = '104px';
         fig.appendChild(divImg);
-        deletWork(icon,fig);
+        deletWork(deletIcon , fig);
         modalGallery.appendChild(fig);
 
     });
 }
 //fonction supprimer un work
-function deletWork(icon, fig) {
-    icon.addEventListener('click', async function (event) {
+function deletWork(deletIcon, fig) {
+    deletIcon.addEventListener('click', async function (event) {
         event.stopPropagation();
         const workId = fig.getAttribute('data-id');
         try {
@@ -229,6 +230,7 @@ function deletWork(icon, fig) {
 }
 //Fonction pour aller vers la deuxième modale 
 function modaleAjoutPhoto() {
+    const modal = document.getElementById("modal1");
     const newModal = document.getElementById("modal2");
     const boutonAjoutPhoto = document.querySelector('.btn-modal');
     const modalGallery = document.querySelector(".gallery-modal");
@@ -239,16 +241,22 @@ function modaleAjoutPhoto() {
         btnReturn.innerHTML = '<i class="fa-solid fa-arrow-left"></i>';
         modalNewContenu.appendChild(btnReturn);
         btnReturn.classList.add('arrow-left');
-        modalGallery.style.display = 'none';
+        modal.style.display = 'none';
         newModal.style.display = 'block';
         btnReturn.style.display = 'block';
         console.log("bonjour");
 
+        btnReturn.addEventListener('click', () => {
+
+            modal.style.display = 'block';
+            newModal.style.display = 'none';
+        });
     });
 
     // Fonction pour fermer le modal
     function fermerModal() {
-        newModalmodal.style.display = "none";
+        newModal.style.display = "none";
+
 
     }
     const boutonFermerNewModal = document.getElementById('fermerModal2');
