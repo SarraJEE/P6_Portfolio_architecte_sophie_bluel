@@ -201,6 +201,7 @@ nav li {
 .loginAdmin a:hover {
 	color: #B1663C;
 }
+
 li:hover {
 	color: #B1663C;
 }
@@ -439,11 +440,12 @@ footer nav ul {
 	width: 100%;
 	height: 59px;
 	background: #fff;
-	
+
 }
-.visibleBanner{
+
+.visibleBanner {
 	background: #000;
-	
+
 }
 
 .banner i {
@@ -466,15 +468,26 @@ footer nav ul {
 /*bouton modifier */
 .boutonEdit {
 	position: absolute;
-	top: 10px;
+	top: 0px;
 	display: block;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
+	right: 358px;
+	;
 }
 
-/*la modal*/
+.boutonEdit h2 {
+	color: #000;
+	font-family: Work Sans;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}
+
+/*la modale*/
 .modal {
 	/* Par défaut, le modal est masqué */
 	display: none;
@@ -488,28 +501,28 @@ footer nav ul {
 
 /* Style pour le contenu du modal */
 .modal-contenu {
+	overflow: auto;
 	position: relative;
 	background-color: #fff;
 	margin: 10% auto;
 	padding: 20px;
 	width: 630px;
-     height: 688px;
+	height: 688px;
 
 }
 
 .modal-contenu h2 {
-
-color: #000;
-text-align: center;
-font-family: Work Sans;
-font-size: 26px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
-margin-top: 60px;
-margin-bottom: 40px;
+	color: #000;
+	text-align: center;
+	font-family: Work Sans;
+	font-size: 26px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	margin-top: 60px;
+	margin-bottom: 40px;
 }
-	
+
 .fermer-modal {
 	position: absolute;
 	top: 0;
@@ -520,19 +533,22 @@ margin-bottom: 40px;
 	padding: 10px;
 	cursor: pointer;
 }
-.gallery-modale-img{
-	width: 78px;
-    height: 104px;
+
+.gallery-modale-img {
+  background-repeat: no-repeat;
+  background-size: 78px;
 }
-.gallery-modal{
+
+
+.gallery-modal {
 	display: flex;
 	flex-wrap: wrap;
-	gap:10px;
+	gap: 10px;
 	margin-left: 100px;
 	margin-right: 100px;
 }
 
-.btn-modal{
+.btn-modal {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -541,8 +557,50 @@ margin-bottom: 40px;
 	border-radius: 60px;
 	width: 237px;
 	height: 36px;
-	margin-top:93px ;
+	margin-top: 93px;
 	margin-bottom: 45px;
 	margin-left: 190px;
 	margin-right: 190px;
+}
+
+.icon {
+	color: white;
+	border-radius: 20%;
+	background-color: black;
+	padding: 4px;
+	margin-left: 53px;
+  margin-top: 4px;
+}
+
+/*style de la deuxième modale*/
+
+.arrow-left{
+	display: none;
+	position: absolute;
+	top:10px;
+	left:10px;
+	width: 21px;
+	height: 18px;
+}
+.modal-contenu2{
+	overflow: auto;
+	position: relative;
+	background-color: #fff;
+	margin: 10% auto;
+	padding: 20px;
+	width: 630px;
+	height: 688px;
+
+}
+
+.modal-contenu2 h2 {
+	color: #000;
+	text-align: center;
+	font-family: Work Sans;
+	font-size: 26px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	margin-top: 60px;
+	margin-bottom: 40px;
 }

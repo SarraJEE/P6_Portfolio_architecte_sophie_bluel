@@ -102,51 +102,64 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 //Partie Admin connecté
-const adminToken=sessionStorage.getItem("token");
+const adminToken = sessionStorage.getItem("token");
 
-function Admin(){
-if (adminToken){
-    const connect=document.querySelector(".loginAdmin");
-    connect.innerHTML= "<a href='#'>logout</a>";
-    connect.addEventListener("click",(e) => {
-        e.preventDefault(); 
-        sessionStorage.removeItem("token");
-        window.location.href="index.html";
+function Admin() {
+    if (adminToken) {
+        const connect = document.querySelector(".loginAdmin");
+        connect.innerHTML = "<a href='#'>logout</a>";
+        connect.addEventListener("click", (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem("token");
+            window.location.href = "index.html";
+        });
+
+        adminDisplay();
+        modaleProjets();
+        modaleAjoutPhoto();
+    };
+
+
+};
+
+function adminDisplay() {
+    //Création de la banniére
+    const banner = document.querySelector(".banner");
+    banner.innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: white;"></i>' + '<h2>Mode édition</h2>';
+    banner.classList.add("visibleBanner");
+
+    //On masque les filtres 
+    const sectionFiltreBtns = document.querySelector(".btns");
+    sectionFiltreBtns.classList.add("invisible");
+    //Ajout du bouton modifie
+    // Sélectionnez l'élément du modal
+    const modal = document.getElementById("modal1");
+    const portfolio = document.getElementById("portfolio");
+    const boutonEdit = document.createElement("a");
+    boutonEdit.innerHTML = '<i class="fa-solid fa-pen-to-square" style="color:black;";></i>' + '<h2 >modifier<h2/>';
+    boutonEdit.addEventListener("click", ouvrirModal);
+    boutonEdit.classList.add("boutonEdit");
+    portfolio.appendChild(boutonEdit);
+    // Fonction pour ouvrir le modal
+    function ouvrirModal() {
+        modal.style.display = "block";
+    }
+    // Fonction pour fermer le modal
+    function fermerModal() {
+        modal.style.display = "none";
+    }
+
+    const boutonFermerModal = document.getElementById('fermerModal');
+    boutonFermerModal.addEventListener('click', () => {
+        fermerModal()
     });
 
-    adminDisplay();
-    modaleProjets();
-    
-};
-
-
-};
-function adminDisplay(){
- //Création de la banniére
- const banner = document.querySelector(".banner");
- banner.innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: white;"></i>' + '<h2>Mode édition</h2>';
- banner.classList.add("visibleBanner");
- 
-//On masque les filtres 
-const sectionFiltreBtns = document.querySelector(".btns");
-sectionFiltreBtns.classList.add("invisible");
-//Ajout du bouton modifie
-// Sélectionnez l'élément du modal
-const modal = document.getElementById("modal1");
-const portfolio =document.getElementById("portfolio");
-const boutonEdit=document.createElement("a");
-boutonEdit.innerHTML='<i class="fa-solid fa-pen-to-square" style="color:black;";></i>'+'<h2 >modifier<h2/>';
-boutonEdit.addEventListener("click", ouvrirModal);
-
-boutonEdit.classList.add("boutonEdit");
-portfolio.appendChild(boutonEdit);
-/**************************************************************** */
-
-// Fonction pour ouvrir le modal
-function ouvrirModal() {
-  modal.style.display = "block";
-}
-
+    // Si vous voulez également permettre de fermer la modal en cliquant à l'extérieur de celle-ci
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            fermerModal();
+        }
+    });
 
 
 }
@@ -154,27 +167,74 @@ function ouvrirModal() {
 // Génère les projets dans la modale admin
 async function modaleProjets() {
     try {
-      const response = await fetch('http://localhost:5678/api/works');
-      const dataAdmin = await response.json();
-      const modalContenu = document.querySelector(".gallery-modal"); // Sélectionnez le contenu de la modale
-  
-      for (let i = 0; i < dataAdmin.length; i++) {
-        const fig = document.createElement("figure");
-        fig.classList.add("gallery-modale");
-        modalContenu.appendChild(fig); // Ajoutez le div à modal-contenu
-  
-        const img = document.createElement("img");
-        img.src = dataAdmin[i].imageUrl;
-        fig.appendChild(img); // Ajoutez l'image à la figure
-        img.classList.add("gallery-modale-img");
-        const p = document.createElement("p"); // Créez un élément p pour contenir l'icône
-        const icon = document.createElement("i");
-        icon.classList.add("fa-solid", "fa-trash-can");
-        p.appendChild(icon);
-        fig.appendChild(p); // Ajoutez p avec l'icône à la figure
-      }
+        const response = await fetch('http://localhost:5678/api/works');
+        const dataAdmin = await response.json();
+        const modalGallery = document.querySelector(".gallery-modal");
+        dataAdmin.forEach((work, index) => {
+            const fig = document.createElement('figure');
+            fig.classList.add('gallery-modale');
+            modalGallery.appendChild(fig);
+            const p = document.createElement('p'); 
+            const icon = document.createElement('i');
+            icon.classList.add('fa-solid', 'fa-trash-can', 'icon');
+            p.appendChild(icon);
+            p.classList.add('delete');
+            const divImg = document.createElement('div');
+            divImg.appendChild(p);
+           // img.src = work.imageUrl;
+
+           divImg.classList.add('gallery-modale-img');
+           divImg.style.backgroundImage= "url('"+work.imageUrl+"')";
+           divImg.style.width='78px';
+           divImg.style.height='104px';
+            //fig.style.backgroundImage= "url('work.imageUrl')"
+            //fig.appendChild(img);
+            fig.appendChild(divImg);
+            
+           
+           // fig.appendChild(p);
+           // p.classList.add('delete')
+        });
     } catch (error) {
-      console.error("Erreur lors de la récupération des données admin : ", error);
+        console.error('Erreur lors de la récupération des données admin : ', error);
     }
-  }
-  
+};
+
+//Fonction pour aller vers la deuxième modale 
+ function modaleAjoutPhoto() {
+    const newModal = document.getElementById("modal2");
+    const boutonAjoutPhoto = document.querySelector('.btn-modal');
+    const modalGallery = document.querySelector(".gallery-modal");
+    boutonAjoutPhoto.addEventListener('click', () => {
+        console.log("hellllllllo");
+        const modalNewContenu = document.querySelector('.modal-contenu2'); // Déplacez cette ligne ici
+        const btnReturn = document.createElement("a");
+        btnReturn.innerHTML = '<i class="fa-solid fa-arrow-left"></i>';
+        modalNewContenu.appendChild(btnReturn);
+        btnReturn.classList.add('arrow-left');
+        modalGallery.style.display = 'none';
+        newModal.style.display = 'block';
+        btnReturn.style.display = 'block';
+        console.log("bonjour");
+
+    });
+
+// Fonction pour fermer le modal
+function fermerModal() {
+    newModalmodal.style.display = "none";
+    
+}
+const boutonFermerNewModal = document.getElementById('fermerModal2');
+boutonFermerNewModal.addEventListener('click', () => {
+    fermerModal()
+});
+
+// Si vous voulez également permettre de fermer la modal en cliquant à l'extérieur de celle-ci
+window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        fermerModal();
+    }
+});
+
+
+}
