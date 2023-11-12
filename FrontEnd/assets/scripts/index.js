@@ -10,7 +10,7 @@ const modalGallery = document.querySelector(".gallery-modal");
 const adminToken = sessionStorage.getItem("token");
 let files = [];
 let options=[];
-const btnAjouterProjet = document.querySelector(".js-add-work");
+const btnAjoutProjet = document.querySelector(".js-add-work");
 // boutonTous.classList.add("btn_active");
 async function main() {
     // Appeler la fonction pour récupérer et afficher les données
@@ -231,7 +231,7 @@ function AddPhotoModal() {
         newModal.style.display = 'block';
         btnReturn.style.display = 'block';
         document.getElementById("fileUploadForm").reset();
-        optionCategories();
+        CategoryOption();
         console.log("bonjour");
         btnReturn.addEventListener('click', () => {
             modal.style.display = 'block';
@@ -256,16 +256,23 @@ function AddPhotoModal() {
     });
 
     //Envoi  d'un nouveau d’un nouveau projet
-    btnAjouterProjet.addEventListener("click", addNewWork);
+    btnAjoutProjet.addEventListener("click", addWork);
 }
 
-async function addNewWork(event) {
+async function addWork(event) {
     event.preventDefault();
     const title = document.querySelector(".js-title").value;
     const categoryId = document.querySelector(".js-categoryId").value;
     const image = document.querySelector(".js-image").files[0];
-     
-    if (title === "" || categoryId === "" || image === undefined) {
+    const maxSizeImage=4*1024*1024;
+    // Vérifiez si une image a été sélectionnée
+    if (!image) {
+        alert("Veuillez sélectionner une image");
+        return;
+    }else if (image.size > maxSizeImage) {
+        alert("La taille de votre image est superieur à 4mo ");
+        return;
+    } else if (title === "" || categoryId === "" || image === undefined) {
         alert("Merci de remplir tous les champs");
         return;
     } else if (!createCategory(categoryId) === categoryId) {
@@ -273,7 +280,6 @@ async function addNewWork(event) {
         return;
     } else {
         try {
-            btnAjouterProjet.classList.add("btn_active");
             const formData = new FormData();
             formData.append("title", title);
             formData.append("category", categoryId);
@@ -308,7 +314,7 @@ async function addNewWork(event) {
     }
 }
 
-async function optionCategories(categoryId) {
+async function CategoryOption(categoryId) {
      alert("options");
     displayCategories(categoryId);
     const selectCategory = document.querySelector(".js-categoryId");
@@ -322,3 +328,25 @@ async function optionCategories(categoryId) {
     });
     
 }
+
+function uploadFile(e) {
+    const picture = document.getElementById("picture");
+    const [image] = e.files;
+    // Mettez à jour l'aperçu de l'image
+    picture.src = URL.createObjectURL(image);
+    // Masquez les éléments liés au téléchargement de fichier
+    const iconePhotoFile = document.querySelector(".fa-image");
+    iconePhotoFile.style.display = "none";
+    const boutonFile = document.querySelector(".rectangle label");
+    boutonFile.style.display = "none";
+    const infoFile = document.querySelector(".rectangle p");
+    infoFile.style.display = "none";
+}
+
+
+
+
+
+
+
+

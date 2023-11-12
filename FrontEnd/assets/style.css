@@ -628,7 +628,9 @@ footer nav ul {
 	font-size: 14px;
 	line-height: normal;
 	padding: 10px 33px 10px 33px;
-
+	height: 36px;
+	border-radius: 50px;
+	background: #CBD6DC;
 }
 
 .rectangle p {
@@ -724,7 +726,7 @@ footer nav ul {
 	display: none;
 }
 
-#photo {
+#picture{
 	width: 129px;
 	height: 193px;
 	background: url(<path-to-image>), lightgray 50% / cover no-repeat;
@@ -744,6 +746,3 @@ footer nav ul {
 	border-radius: 60px;
 	background: #A7A7A7;
 }
-
-
-
