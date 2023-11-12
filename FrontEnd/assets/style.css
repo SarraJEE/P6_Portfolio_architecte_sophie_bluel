@@ -745,12 +745,5 @@ footer nav ul {
 	background: #A7A7A7;
 }
 
-/*Style pour les messages d'erreur et de succès */
-.error-container,
-.success-container {
-	margin-top: 10px;
-	padding: 10px;
-	border-radius: 5px;
-	font-weight: bold;
-}
+
 

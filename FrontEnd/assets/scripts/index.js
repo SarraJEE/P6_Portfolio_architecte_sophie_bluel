@@ -9,13 +9,14 @@ const boutonTous = document.querySelector(".btnTous");
 const modalGallery = document.querySelector(".gallery-modal");
 const adminToken = sessionStorage.getItem("token");
 let files = [];
+let options=[];
+const btnAjouterProjet = document.querySelector(".js-add-work");
 // boutonTous.classList.add("btn_active");
 async function main() {
     // Appeler la fonction pour récupérer et afficher les données
     await displayWorks();
     await displayCategories(); // Ajout de l'appel pour afficher les catégories
-
-    await Admin();
+    admin();
 }
 
 main();
@@ -108,7 +109,7 @@ async function displayCategories() {
 }
 
 //Partie Admin connecté
-function Admin() {
+function admin() {
     if (adminToken) {
         const connect = document.querySelector(".loginAdmin");
         connect.innerHTML = "<a href='#'>logout</a>";
@@ -119,9 +120,8 @@ function Admin() {
         });
 
         adminDisplay();
-        //modaleProjets();
-        modaleAjoutPhoto();
-
+        AddPhotoModal();
+      
     };
 
 };
@@ -165,7 +165,6 @@ function adminDisplay() {
             fermerModal();
         }
     });
-
 
 }
 
@@ -218,11 +217,10 @@ function deletWork(deletIcon, fig) {
     });
 }
 //Fonction pour aller vers la deuxième modale 
-function modaleAjoutPhoto() {
+function AddPhotoModal() {
     const modal = document.getElementById("modal1");
     const newModal = document.getElementById("modal2");
     const boutonAjoutPhoto = document.querySelector('.btn-modal');
-    const modalGallery = document.querySelector(".gallery-modal");
     boutonAjoutPhoto.addEventListener('click', () => {
         const modalNewContenu = document.querySelector('.modal-contenu2'); // Déplacez cette ligne ici
         const btnReturn = document.createElement("a");
@@ -232,23 +230,21 @@ function modaleAjoutPhoto() {
         modal.style.display = 'none';
         newModal.style.display = 'block';
         btnReturn.style.display = 'block';
+        document.getElementById("fileUploadForm").reset();
+        optionCategories();
         console.log("bonjour");
-
         btnReturn.addEventListener('click', () => {
-
             modal.style.display = 'block';
             newModal.style.display = 'none';
         });
     });
-
     // Fonction pour fermer le modal
     function fermerModal() {
         newModal.style.display = "none";
 
-
     }
     const boutonFermerNewModal = document.getElementById('fermerModal2');
-    boutonFermerNewModal.addEventListener('click', () => {
+     boutonFermerNewModal.addEventListener('click', () => {
         fermerModal()
     });
 
@@ -259,31 +255,25 @@ function modaleAjoutPhoto() {
         }
     });
 
-
-    ///////////////////////////////////////////////////////////////////
-
-    const btnAjouterProjet = document.querySelector(".js-add-work");
+    //Envoi  d'un nouveau d’un nouveau projet
     btnAjouterProjet.addEventListener("click", addNewWork);
-
 }
-
 
 async function addNewWork(event) {
     event.preventDefault();
-    await fetchCategories();
     const title = document.querySelector(".js-title").value;
     const categoryId = document.querySelector(".js-categoryId").value;
     const image = document.querySelector(".js-image").files[0];
-
-
+     
     if (title === "" || categoryId === "" || image === undefined) {
         alert("Merci de remplir tous les champs");
         return;
-    } else if (!await fetchCategories() === categoryId) {
+    } else if (!createCategory(categoryId) === categoryId) {
         alert("Merci de choisir une catégorie valide");
         return;
     } else {
         try {
+            btnAjouterProjet.classList.add("btn_active");
             const formData = new FormData();
             formData.append("title", title);
             formData.append("category", categoryId);
@@ -292,7 +282,7 @@ async function addNewWork(event) {
             const response = await fetch("http://localhost:5678/api/works", {
                 method: "POST",
                 headers: {
-                    Authorization:`Bearer ${adminToken}`,
+                    Authorization: `Bearer ${adminToken}`,
                 },
                 body: formData,
             });
@@ -300,8 +290,7 @@ async function addNewWork(event) {
             if (response.status === 201) {
                 alert("Projet ajouté avec succès :)");
                 displayWorks();
-                backToModale(event);
-                generationProjets(data, null);
+               
 
             } else if (response.status === 400) {
                 alert("Merci de remplir tous les champs");
@@ -319,17 +308,17 @@ async function addNewWork(event) {
     }
 }
 
-async function fetchCategories() {
-
-    alert("fetchcategorie")
-    const response = await fetch(api_url_categories);
-    if (!response.ok) {
-        throw new Error('La requête des catégories a échoué');
-    }
-    const categories = await response.json();
-    return categories.map(category => category.id);
+async function optionCategories(categoryId) {
+     alert("options");
+    displayCategories(categoryId);
+    const selectCategory = document.querySelector(".js-categoryId");
+    // Effacez les options existantes à chaque fois que vous mettez à jour le select
+    selectCategory.innerHTML = "<option value='' selected>--Veuillez choisir une categorie--</option>";
+    categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category.id; // En supposant que la catégorie a une propriété 'id'
+        option.innerHTML = category.name; // En supposant que la catégorie a une propriété 'name'
+        selectCategory.appendChild(option);
+    });
+    
 }
-
-
-
-
