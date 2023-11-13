@@ -126,7 +126,6 @@ function admin() {
 
         adminDisplay();
         AddPhotoModal();
-        updateSubmitButtonState();
     };
 
 };
@@ -245,24 +244,28 @@ function AddPhotoModal() {
         uploadFile();
     });
     // Fonction pour fermer le modal
-    function fermerModal() {
+    function fermerNewModal() {
         newModal.style.display = "none";
 
     }
     const boutonFermerNewModal = document.getElementById('fermerModal2');
     boutonFermerNewModal.addEventListener('click', () => {
-        fermerModal()
+        fermerNewModal()
     });
 
     // Si vous voulez également permettre de fermer la modal en cliquant à l'extérieur de celle-ci
     window.addEventListener('click', (event) => {
         if (event.target === newModal) {
-            fermerModal();
+            fermerNewModal();
         }
     });
 
     //Envoi  d'un nouveau d’un nouveau projet
-    submitButton.addEventListener("click", addWork);
+    submitButton.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await addWork(e);
+        fermerNewModal();
+    });
 }
 async function addWork(event) {
     event.preventDefault();
@@ -300,7 +303,7 @@ async function addWork(event) {
 
             if (response.status === 201) {
                 alert("Projet ajouté avec succès :)");
-                displayWorks();
+                displayWorks();   
 
             } else if (response.status === 400) {
                 alert("Merci de remplir tous les champs");
@@ -320,14 +323,13 @@ async function addWork(event) {
 async function CategoryOption(categoryId) {
     alert("options");
     displayCategories(categoryId);
-    const selectCategory = document.querySelector(".js-categoryId");
     // Effacez les options existantes à chaque fois que vous mettez à jour le select
-    selectCategory.innerHTML = "<option value='' selected>--Veuillez choisir une categorie--</option>";
+    categorieSelect.innerHTML = "<option value='' selected>--Veuillez choisir une categorie--</option>";
     categories.forEach(category => {
         const option = document.createElement("option");
         option.value = category.id; // En supposant que la catégorie a une propriété 'id'
         option.innerHTML = category.name; // En supposant que la catégorie a une propriété 'name'
-        selectCategory.appendChild(option);
+        categorieSelect .appendChild(option);
     });
 }
 // Fonction pour gérer le téléchargement de l'image
@@ -351,7 +353,6 @@ function uploadFile(e) {
     photoInput.addEventListener('change', updateSubmitButton);
     categorieSelect.addEventListener('change', updateSubmitButton);
 
-    
 }
 
 // Fonction pour mettre à jour l'état du bouton de soumission
