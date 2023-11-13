@@ -76,7 +76,7 @@
 			<h2>Galerie photo</h2>
 			<span class="fermer-modal" id="fermerModal">&times;</span>
 			<div class="gallery-modal"></div>
-			<span class="line"></span>
+			<div class="line"></div>
 			<button class="btn-modal">Ajouter une photo</button>
 		</div>
 	</div>
@@ -88,9 +88,10 @@
 				<div class="rectangle">
 					<i class="fa-regular fa-image "></i>
 					<label for="photo" class=".custom-button">+ Ajouter une photo</label>
+					<p>jpg, png : 4mo max</p>
 					<input type="file" name="photo" id="photo" class="js-image"  onchange="uploadFile(this)">
 					<img src="#" alt=""id="picture">
-					<p>jpg, png : 4mo max</p>
+					
 				</div>
 				<div class="form-group-title">
 					<label for="title">Titre</label>
@@ -104,7 +105,7 @@
 					</select>
 				</div>
 				<span class="line"></span>
-				<input type="submit" id="file" class="js-add-work" value="Valider">
+				<input type="submit" id="submitButton" class="js-add-work" value="Valider" disabled>
 			</form>
 
 		</div>

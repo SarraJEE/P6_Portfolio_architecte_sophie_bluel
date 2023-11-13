@@ -293,7 +293,6 @@ li:hover {
 .btn_active {
 	background: #1D6154;
 	color: #FFF;
-
 }
 
 .gallery {
@@ -410,6 +409,7 @@ footer nav ul {
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
+	
 }
 
 /* Style de base pour les messages d'erreur */
@@ -475,7 +475,7 @@ footer nav ul {
 	align-items: center;
 	gap: 10px;
 	right: 358px;
-	;
+
 }
 
 .boutonEdit h2 {
@@ -505,28 +505,34 @@ footer nav ul {
 	overflow: auto;
 	position: relative;
 	background-color: #fff;
-	margin: 10% auto;
+	margin: 5% auto;
 	padding: 20px;
 	width: 630px;
-	height: 688px;
+    height: 688px; 
 	display: flex;
 	flex-flow: column;
 	justify-content: center;
 	align-items: center;
+	border-radius: 10px;
 }
-
+.modal-contenu2{
+	overflow: auto;
+	position: relative;
+	background-color: #fff;
+	margin: 5% auto;
+	padding: 20px;
+	width: 630px;
+	height: 688px;
+	border-radius: 10px;
+}
 
 
 .modal-contenu h2 {
 	color: #000;
-	text-align: center;
 	font-family: Work Sans;
 	font-size: 26px;
-	font-style: normal;
 	font-weight: 400;
-	line-height: normal;
-	margin-top: 60px;
-	margin-bottom: 40px;
+	margin-bottom: 60px;
 }
 
 .fermer-modal {
@@ -549,8 +555,8 @@ footer nav ul {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
-	margin-left: 100px;
-	margin-right: 100px;
+	margin-left: 68px;
+margin-bottom: 40px;
 }
 
 .btn-modal {
@@ -561,7 +567,8 @@ footer nav ul {
 	border-radius: 60px;
 	width: 237px;
 	height: 36px;
-	margin-top: 93px;
+	border: none;
+
 }
 
 .icon {
@@ -581,17 +588,6 @@ footer nav ul {
 	top: 10px;
 	left: 10px;
 	font-size: 21px;
-}
-
-.modal-contenu2 {
-	overflow: auto;
-	position: relative;
-	background-color: #fff;
-	margin: 10% auto;
-	padding: 20px;
-	width: 630px;
-	height: 688px;
-
 }
 
 .modal-contenu2 h2 {
@@ -618,10 +614,7 @@ footer nav ul {
 	background: #E8F1F6;
 	margin-left: 105px;
 	margin-bottom: 30px;
-
-
 }
-
 .rectangle label {
 	color: #306685;
 	text-align: center;
@@ -645,7 +638,6 @@ footer nav ul {
 	display: flex;
 	flex-direction: column;
 }
-
 .formModal input {
 	margin-left: 105px;
 	width: 68%;
@@ -654,8 +646,8 @@ footer nav ul {
 	background: #FFF;
 	box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
 	margin-bottom: 21px;
+	border: none;
 }
-
 
 .formModal select {
 	margin-left: 105px;
@@ -665,9 +657,9 @@ footer nav ul {
 	background: #FFF;
 	box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
 	margin-bottom: 47px;
+	border: none;
 
 }
-
 .form-group-title label {
 	padding-top: 10px;
 	color: #3D3D3D;
@@ -679,27 +671,18 @@ footer nav ul {
 	margin-left: 105px;
 
 }
-
 .formModal input[type="submit"] {
-	font-family: 'Syne';
-	font-weight: 700;
-	color: white;
 	background: #A7A7A7;
 	margin: 2em auto;
 	width: 237px;
-	height: 36px;
-	text-align: center;
-	border-radius: 60px;
-	margin-top: 55px;
+	height: 36px;	
+	border: none;
 }
-
 .fa-image {
 	font-size: 76px;
 	color: #CBD6DC;
-	margin-top: 24px;
+	margin-top: 48px;
 }
-
-
 .formCategorie label {
 	margin-top: 21px;
 	padding-top: 10px;
@@ -710,39 +693,26 @@ footer nav ul {
 	font-weight: 500;
 	line-height: normal;
 	margin-left: 105px;
-
-
 }
-
 .custom-button {
 	width: 173px;
 	height: 36px;
 	border-radius: 50px;
 	background: #CBD6DC;
-
 }
-
 .custom-file-input {
 	display: none;
 }
-
 #picture{
 	width: 129px;
 	height: 193px;
 	background: url(<path-to-image>), lightgray 50% / cover no-repeat;
 	margin-bottom: 21px
 }
-
 .line {
 	margin-left: 105px;
 	width: 68%;
 	height: 1px;
 	background: #B3B3B3;
-}
-
-.valider {
-	width: 237px;
-	height: 36px;
-	border-radius: 60px;
-	background: #A7A7A7;
+	margin-bottom: 69px;
 }

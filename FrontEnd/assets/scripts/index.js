@@ -9,13 +9,18 @@ const boutonTous = document.querySelector(".btnTous");
 const modalGallery = document.querySelector(".gallery-modal");
 const adminToken = sessionStorage.getItem("token");
 let files = [];
-let options=[];
-const btnAjoutProjet = document.querySelector(".js-add-work");
-// boutonTous.classList.add("btn_active");
+let options = [];
+const titleInput = document.getElementById('title');
+const photoInput = document.getElementById('photo');
+const categorieSelect = document.getElementById('categorie');
+const submitButton = document.getElementById('submitButton');
+const fileUploadForm = document.getElementById("fileUploadForm")
 async function main() {
     // Appeler la fonction pour récupérer et afficher les données
     await displayWorks();
-    await displayCategories(); // Ajout de l'appel pour afficher les catégories
+    // Ajout de l'appel pour afficher les catégories
+    await displayCategories();
+    //Partie Admin connecté
     admin();
 }
 
@@ -121,7 +126,7 @@ function admin() {
 
         adminDisplay();
         AddPhotoModal();
-      
+        updateSubmitButtonState();
     };
 
 };
@@ -131,7 +136,6 @@ function adminDisplay() {
     const banner = document.querySelector(".banner");
     banner.innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: white;"></i>' + '<h2>Mode édition</h2>';
     banner.classList.add("visibleBanner");
-
     //On masque les filtres 
     const sectionFiltreBtns = document.querySelector(".btns");
     sectionFiltreBtns.classList.add("invisible");
@@ -230,13 +234,15 @@ function AddPhotoModal() {
         modal.style.display = 'none';
         newModal.style.display = 'block';
         btnReturn.style.display = 'block';
-        document.getElementById("fileUploadForm").reset();
-        CategoryOption();
         console.log("bonjour");
         btnReturn.addEventListener('click', () => {
             modal.style.display = 'block';
             newModal.style.display = 'none';
+
         });
+        fileUploadForm.reset();
+        CategoryOption();
+        uploadFile();
     });
     // Fonction pour fermer le modal
     function fermerModal() {
@@ -244,7 +250,7 @@ function AddPhotoModal() {
 
     }
     const boutonFermerNewModal = document.getElementById('fermerModal2');
-     boutonFermerNewModal.addEventListener('click', () => {
+    boutonFermerNewModal.addEventListener('click', () => {
         fermerModal()
     });
 
@@ -256,20 +262,19 @@ function AddPhotoModal() {
     });
 
     //Envoi  d'un nouveau d’un nouveau projet
-    btnAjoutProjet.addEventListener("click", addWork);
+    submitButton.addEventListener("click", addWork);
 }
-
 async function addWork(event) {
     event.preventDefault();
-    const title = document.querySelector(".js-title").value;
-    const categoryId = document.querySelector(".js-categoryId").value;
-    const image = document.querySelector(".js-image").files[0];
-    const maxSizeImage=4*1024*1024;
+    const title = titleInput.value;
+    const categoryId = categorieSelect.value;
+    const image = photoInput.files[0];
+    const maxSizeImage = 4 * 1024 * 1024;
     // Vérifiez si une image a été sélectionnée
     if (!image) {
         alert("Veuillez sélectionner une image");
         return;
-    }else if (image.size > maxSizeImage) {
+    } else if (image.size > maxSizeImage) {
         alert("La taille de votre image est superieur à 4mo ");
         return;
     } else if (title === "" || categoryId === "" || image === undefined) {
@@ -296,7 +301,6 @@ async function addWork(event) {
             if (response.status === 201) {
                 alert("Projet ajouté avec succès :)");
                 displayWorks();
-               
 
             } else if (response.status === 400) {
                 alert("Merci de remplir tous les champs");
@@ -307,7 +311,6 @@ async function addWork(event) {
                 window.location.href = "login.html";
             }
         }
-
         catch (error) {
             console.log(error);
         }
@@ -315,7 +318,7 @@ async function addWork(event) {
 }
 
 async function CategoryOption(categoryId) {
-     alert("options");
+    alert("options");
     displayCategories(categoryId);
     const selectCategory = document.querySelector(".js-categoryId");
     // Effacez les options existantes à chaque fois que vous mettez à jour le select
@@ -326,27 +329,44 @@ async function CategoryOption(categoryId) {
         option.innerHTML = category.name; // En supposant que la catégorie a une propriété 'name'
         selectCategory.appendChild(option);
     });
-    
 }
-
+// Fonction pour gérer le téléchargement de l'image
 function uploadFile(e) {
+    const iconePhotoFile = document.querySelector(".fa-image");
+    iconePhotoFile.style.display = "block";
+    const boutonFile = document.querySelector(".rectangle label");
+    boutonFile.style.display = "block";
     const picture = document.getElementById("picture");
+    const infoFile = document.querySelector(".rectangle p");
+    infoFile.style.display = "block";
+    picture.src = "";  // Remplacez par l'URL de l'image par défaut si nécessaire
     const [image] = e.files;
     // Mettez à jour l'aperçu de l'image
     picture.src = URL.createObjectURL(image);
     // Masquez les éléments liés au téléchargement de fichier
-    const iconePhotoFile = document.querySelector(".fa-image");
     iconePhotoFile.style.display = "none";
-    const boutonFile = document.querySelector(".rectangle label");
     boutonFile.style.display = "none";
-    const infoFile = document.querySelector(".rectangle p");
     infoFile.style.display = "none";
+    titleInput.addEventListener('input', updateSubmitButton);
+    photoInput.addEventListener('change', updateSubmitButton);
+    categorieSelect.addEventListener('change', updateSubmitButton);
+
+    
 }
 
-
-
-
-
-
-
-
+// Fonction pour mettre à jour l'état du bouton de soumission
+function updateSubmitButton() {
+    // Vérifiez si tous les champs du formulaire sont remplis
+    const titleFilled = titleInput.value.trim() !== '';
+    const photoFilled = photoInput.files && photoInput.files[0];
+    const categorieFilled = categorieSelect.value !== '';
+    // Activez le bouton et changez sa couleur si tous les champs sont remplis
+    if (titleFilled && photoFilled && categorieFilled) {
+        submitButton.disabled = false;
+        submitButton.style.backgroundColor = " #1D6154";
+    } else {
+        // Désactivez le bouton, réinitialisez sa couleur et retirez la classe s'il y a des champs non remplis
+        submitButton.disabled = true;
+        submitButton.style.backgroundColor = " #A7A7A7";
+    }
+}
