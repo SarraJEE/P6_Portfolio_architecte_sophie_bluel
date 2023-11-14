@@ -305,7 +305,21 @@ li:hover {
 
 .gallery img {
 	width: 100%;
+}
+.gallery-modale{
+	position: relative;
+	width: calc(100%/5 - 10px);
+}
+.delete{
+	position: absolute;
+	top: 3px;
+	right: 7px;
+}
 
+.gallery-modale img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 #contact {
@@ -468,13 +482,11 @@ footer nav ul {
 /*bouton modifier */
 .boutonEdit {
 	position: absolute;
-	top: 0px;
-	display: block;
+	top: 8px;
+	right: 346px;
 	display: flex;
-	justify-content: center;
-	align-items: center;
 	gap: 10px;
-	right: 358px;
+	
 
 }
 
@@ -505,14 +517,9 @@ footer nav ul {
 	overflow: auto;
 	position: relative;
 	background-color: #fff;
-	margin: 5% auto;
-	padding: 20px;
+	margin: 2% auto;
 	width: 630px;
     height: 688px; 
-	display: flex;
-	flex-flow: column;
-	justify-content: center;
-	align-items: center;
 	border-radius: 10px;
 }
 .modal-contenu2{
@@ -520,9 +527,9 @@ footer nav ul {
 	position: relative;
 	background-color: #fff;
 	margin: 5% auto;
-	padding: 20px;
 	width: 630px;
 	height: 688px;
+	padding: 30px;
 	border-radius: 10px;
 }
 
@@ -533,6 +540,7 @@ footer nav ul {
 	font-size: 26px;
 	font-weight: 400;
 	margin-bottom: 60px;
+	margin-left: 190px;
 }
 
 .fermer-modal {
@@ -545,18 +553,13 @@ footer nav ul {
 	cursor: pointer;
 }
 
-.gallery-modale-img {
-	background-repeat: no-repeat;
-	background-size: 78px;
-}
-
-
 .gallery-modal {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
-	margin-left: 68px;
-margin-bottom: 40px;
+	padding-bottom: 50px;
+    margin-bottom: 38px;
+	border-bottom: 1px solid #B3B3B3;
 }
 
 .btn-modal {
@@ -568,8 +571,26 @@ margin-bottom: 40px;
 	width: 237px;
 	height: 36px;
 	border: none;
+	margin-left: 190px;
 
 }
+
+.gallery-modale{
+	position: relative;
+	width: calc(100%/5 - 10px);
+}
+.delete{
+	position: absolute;
+	top: 3px;
+	right: 7px;
+}
+
+.gallery-modale img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
 
 .icon {
 	color: white;
@@ -598,23 +619,23 @@ margin-bottom: 40px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	margin-top: 60px;
 	margin-bottom: 40px;
 }
 
 .rectangle {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-	justify-content: center;
-	align-items: center;
-	width: 68%;
-	height: 169px;
-	border-radius: 3px;
-	background: #E8F1F6;
-	margin-left: 105px;
-	margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    width: 68%;
+    height: 169px;
+    border-radius: 3px;
+    background: #E8F1F6;
+    margin-left: 105px;
+    margin-bottom: 30px;
 }
+
 .rectangle label {
 	color: #306685;
 	text-align: center;
@@ -648,7 +669,16 @@ margin-bottom: 40px;
 	margin-bottom: 21px;
 	border: none;
 }
+input#photo{
+	opacity: 0;
+}
 
+.rectangle img{
+	height: 100%;
+    width: 129px;
+    padding-right: 35%;
+	
+}
 .formModal select {
 	margin-left: 105px;
 	width: 69%;
@@ -703,12 +733,7 @@ margin-bottom: 40px;
 .custom-file-input {
 	display: none;
 }
-#picture{
-	width: 129px;
-	height: 193px;
-	background: url(<path-to-image>), lightgray 50% / cover no-repeat;
-	margin-bottom: 21px
-}
+
 .line {
 	margin-left: 105px;
 	width: 68%;

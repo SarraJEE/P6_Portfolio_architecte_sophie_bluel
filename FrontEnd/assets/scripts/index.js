@@ -1,4 +1,3 @@
-
 const api_url_works = 'http://localhost:5678/api/works';
 const api_url_categories = 'http://localhost:5678/api/categories';
 let works = [];
@@ -175,20 +174,18 @@ function adminDisplay() {
 function createWorkModale(work) {
     const fig = document.createElement('figure');
     fig.classList.add('gallery-modale');
+    const image = document.createElement('img');
+    image.src = work.imageUrl;
+    image.classList.add("reSize")
     fig.setAttribute("data-id", work.id)
+    fig.appendChild(image);
     modalGallery.appendChild(fig);
     const p = document.createElement('p');
     const deletIcon = document.createElement('i');
     deletIcon.classList.add('fa-solid', 'fa-trash-can', 'icon');
     p.appendChild(deletIcon);
     p.classList.add('delete');
-    const divImg = document.createElement('div');
-    divImg.appendChild(p);
-    divImg.classList.add('gallery-modale-img');
-    divImg.style.backgroundImage = "url('" + work.imageUrl + "')";
-    divImg.style.width = '78px';
-    divImg.style.height = '104px';
-    fig.appendChild(divImg);
+    fig.appendChild(p);
     deletWork(deletIcon, fig);
     modalGallery.appendChild(fig);
 
@@ -334,6 +331,8 @@ async function CategoryOption(categoryId) {
 }
 // Fonction pour gérer le téléchargement de l'image
 function uploadFile(e) {
+    const supportPhto=document.querySelector(".rectangle");
+    supportPhto.style.flexDirection="column";
     const iconePhotoFile = document.querySelector(".fa-image");
     iconePhotoFile.style.display = "block";
     const boutonFile = document.querySelector(".rectangle label");
@@ -346,6 +345,7 @@ function uploadFile(e) {
     // Mettez à jour l'aperçu de l'image
     picture.src = URL.createObjectURL(image);
     // Masquez les éléments liés au téléchargement de fichier
+    supportPhto.style.flexDirection="row";
     iconePhotoFile.style.display = "none";
     boutonFile.style.display = "none";
     infoFile.style.display = "none";
