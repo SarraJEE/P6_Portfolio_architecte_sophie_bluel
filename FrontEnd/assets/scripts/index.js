@@ -130,6 +130,7 @@ function admin() {
 };
 
 function adminDisplay() {
+
     //Création de la banniére
     const banner = document.querySelector(".banner");
     banner.innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: white;"></i>' + '<h2>Mode édition</h2>';
@@ -140,12 +141,12 @@ function adminDisplay() {
     //Ajout du bouton modifie
     // Sélectionnez l'élément du modal
     const modal = document.getElementById("modal1");
-    const portfolio = document.getElementById("portfolio");
+    const portfolioInfo = document.getElementById("info");
     const boutonEdit = document.createElement("a");
     boutonEdit.innerHTML = '<i class="fa-solid fa-pen-to-square" style="color:black;";></i>' + '<h2 >modifier<h2/>';
+    portfolioInfo.appendChild(boutonEdit);
     boutonEdit.addEventListener("click", ouvrirModal);
     boutonEdit.classList.add("boutonEdit");
-    portfolio.appendChild(boutonEdit);
     // Fonction pour ouvrir le modal
     function ouvrirModal() {
         modal.style.display = "block";
@@ -331,16 +332,17 @@ async function CategoryOption(categoryId) {
 }
 // Fonction pour gérer le téléchargement de l'image
 function uploadFile(e) {
+    picture.src = "";  
     const supportPhto=document.querySelector(".rectangle");
     supportPhto.style.flexDirection="column";
     const iconePhotoFile = document.querySelector(".fa-image");
     iconePhotoFile.style.display = "block";
     const boutonFile = document.querySelector(".rectangle label");
-    boutonFile.style.display = "block";
-    const picture = document.getElementById("picture");
     const infoFile = document.querySelector(".rectangle p");
+    boutonFile.style.display = "block";
     infoFile.style.display = "block";
-    picture.src = "";  // Remplacez par l'URL de l'image par défaut si nécessaire
+    if (photoInput.files && photoInput.files.length > 0) {
+    const picture = document.getElementById("picture");
     const [image] = e.files;
     // Mettez à jour l'aperçu de l'image
     picture.src = URL.createObjectURL(image);
@@ -354,7 +356,7 @@ function uploadFile(e) {
     categorieSelect.addEventListener('change', updateSubmitButton);
 
 }
-
+}
 // Fonction pour mettre à jour l'état du bouton de soumission
 function updateSubmitButton() {
     // Vérifiez si tous les champs du formulaire sont remplis
