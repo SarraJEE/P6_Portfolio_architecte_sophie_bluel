@@ -41,7 +41,6 @@ async function displayWorks(categoryId) {
         modalGallery.innerHTML = '';
         // Parcourir les données et afficher chaque projet
         works.forEach((work) => {
-            //console.log(work.category.id + "//" +categoryId)            
             if (work.category.id == categoryId || categoryId == null) {
                 createWork(work);
             }
@@ -79,7 +78,6 @@ function createCategory(category) {
         categoryButtons.forEach((button) => button.classList.remove("btn_active"));
         // Ajouter la classe active au bouton cliqué 
         bouton.classList.add("btn_active");
-        //console.log(categoryId);
         displayWorks(categoryId);
     });
 }
@@ -205,7 +203,6 @@ function deletWork(deletIcon, fig) {
                 }
             });
             if (response.ok) {
-                //fig.remove();
                 displayWorks();
 
 
@@ -231,7 +228,6 @@ function AddPhotoModal() {
         modal.style.display = 'none';
         newModal.style.display = 'block';
         btnReturn.style.display = 'block';
-        console.log("bonjour");
         btnReturn.addEventListener('click', () => {
             modal.style.display = 'block';
             newModal.style.display = 'none';
@@ -301,7 +297,7 @@ async function addWork(event) {
 
             if (response.status === 201) {
                 alert("Projet ajouté avec succès :)");
-                displayWorks();   
+                displayWorks();
 
             } else if (response.status === 400) {
                 alert("Merci de remplir tous les champs");
@@ -319,7 +315,6 @@ async function addWork(event) {
 }
 
 async function CategoryOption(categoryId) {
-    alert("options");
     displayCategories(categoryId);
     // Effacez les options existantes à chaque fois que vous mettez à jour le select
     categorieSelect.innerHTML = "<option value='' selected>--Veuillez choisir une categorie--</option>";
@@ -327,14 +322,14 @@ async function CategoryOption(categoryId) {
         const option = document.createElement("option");
         option.value = category.id; // En supposant que la catégorie a une propriété 'id'
         option.innerHTML = category.name; // En supposant que la catégorie a une propriété 'name'
-        categorieSelect .appendChild(option);
+        categorieSelect.appendChild(option);
     });
 }
 // Fonction pour gérer le téléchargement de l'image
 function uploadFile(e) {
-    picture.src = "";  
-    const supportPhto=document.querySelector(".rectangle");
-    supportPhto.style.flexDirection="column";
+    picture.src = "";
+    const supportPhto = document.querySelector(".rectangle");
+    supportPhto.style.flexDirection = "column";
     const iconePhotoFile = document.querySelector(".fa-image");
     iconePhotoFile.style.display = "block";
     const boutonFile = document.querySelector(".rectangle label");
@@ -342,20 +337,20 @@ function uploadFile(e) {
     boutonFile.style.display = "block";
     infoFile.style.display = "block";
     if (photoInput.files && photoInput.files.length > 0) {
-    const picture = document.getElementById("picture");
-    const [image] = e.files;
-    // Mettez à jour l'aperçu de l'image
-    picture.src = URL.createObjectURL(image);
-    // Masquez les éléments liés au téléchargement de fichier
-    supportPhto.style.flexDirection="row";
-    iconePhotoFile.style.display = "none";
-    boutonFile.style.display = "none";
-    infoFile.style.display = "none";
-    titleInput.addEventListener('input', updateSubmitButton);
-    photoInput.addEventListener('change', updateSubmitButton);
-    categorieSelect.addEventListener('change', updateSubmitButton);
+        const picture = document.getElementById("picture");
+        const [image] = e.files;
+        // Mettez à jour l'aperçu de l'image
+        picture.src = URL.createObjectURL(image);
+        // Masquez les éléments liés au téléchargement de fichier
+        supportPhto.style.flexDirection = "row";
+        iconePhotoFile.style.display = "none";
+        boutonFile.style.display = "none";
+        infoFile.style.display = "none";
+        titleInput.addEventListener('input', updateSubmitButton);
+        photoInput.addEventListener('change', updateSubmitButton);
+        categorieSelect.addEventListener('change', updateSubmitButton);
 
-}
+    }
 }
 // Fonction pour mettre à jour l'état du bouton de soumission
 function updateSubmitButton() {

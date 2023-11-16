@@ -16,8 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
         loginErreur.textContent = '';
         const email = emailInput.value;
         const password = passwordInput.value;
-        console.log('Email saisi :', email);
-        console.log('Mot de passe saisi :', password);
         // Validation de l'email (exemple de validation basique)
         if (!email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]{2,}\.[a-z]{2,4}$/g)) {
             console.log('Validation de l\'email a échoué.');
@@ -38,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
             email: email,
             password: password
         };
-        console.log(userData);
         try {
             const response = await fetch('http://localhost:5678/api/users/login', {
                 method: 'POST',
@@ -80,6 +77,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Une erreur s\'est produite :', error);
         }
     });
-    
+
 
 });
